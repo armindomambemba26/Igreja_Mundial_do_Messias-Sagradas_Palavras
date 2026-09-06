@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igreja Mundial do Messias — Sagradas Palavras</title>
+<style>
+  :root{
+    --vermelho:#8C2A2A;
+    --vermelho-escuro:#6B1F1F;
+    --verde:#1F5C3E;
+    --verde-escuro:#153F2A;
+    --dourado:#B8933F;
+    --dourado-claro:#D8BC7A;
+    --branco:#FBF8F2;
+    --tinta:#2A211A;
+    --tinta-suave:#6b5f52;
+    --linha:#E4DBC9;
+    --sombra: 0 8px 24px rgba(42,33,26,0.10);
+    --raio: 10px;
+    font-size: 16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--branco);
+    color:var(--tinta);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height:1.55;
+    min-height:100vh;
+  }
+  h1,h2,h3,h4{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight:600;
+    color:var(--verde-escuro);
+    margin:0 0 .4em 0;
+  }
+  .sans{font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;}
+  a{color:var(--vermelho-escuro); text-decoration:none;}
+  button, .btn{
+    font-family:inherit; cursor:pointer; border:none; border-radius:var(--raio);
+    padding:.65em 1.2em; font-size:.95rem; background:var(--verde); color:#fff;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  button:hover, .btn:hover{ box-shadow:var(--sombra); transform:translateY(-1px); }
+  .btn.secundario{ background:transparent; color:var(--verde-escuro); border:1.5px solid var(--verde); }
+  .btn.dourado{ background:var(--dourado); color:#fff; }
+  .btn.vermelho{ background:var(--vermelho); }
+  .btn.pequeno{ padding:.4em .8em; font-size:.82rem; }
+  input, select, textarea{
+    font-family:inherit; width:100%; padding:.6em .7em; border-radius:8px;
+    border:1.5px solid var(--linha); background:#fff; font-size:.95rem; color:var(--tinta);
+  }
+  input:focus, select:focus, textarea:focus{ outline:2px solid var(--dourado-claro); border-color:var(--dourado); }
+  label{ font-size:.82rem; font-family:inherit; color:var(--tinta-suave); display:block; margin:.6em 0 .25em; }
+
+  /* topbar */
+  header.topo{
+    background: linear-gradient(180deg, var(--verde-escuro), var(--verde));
+    color:#fff; padding:1.1em 1.2em; position:sticky; top:0; z-index:50;
+    box-shadow: var(--sombra);
+    border-bottom: 3px solid var(--dourado);
+  }
+  .topo-inner{ max-width:980px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1em; flex-wrap:wrap;}
+  .marca{ display:flex; align-items:center; gap:.7em; }
+  .marca .insignia{
+    width:44px; height:44px; border-radius:50%; border:2px solid var(--dourado-claro);
+    display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.08);
+    font-size:1.3rem; flex-shrink:0; overflow:hidden;
+  }
+  .marca .insignia img{ width:100%; height:100%; object-fit:cover; }
+  .marca-nome{ line-height:1.2; }
+  .marca-nome .n1{ font-size:1.02rem; letter-spacing:.02em; color:#fff; }
+  .marca-nome .n2{ font-size:.72rem; color:var(--dourado-claro); font-family:inherit; letter-spacing:.08em; }
+  nav.menu{ display:flex; gap:1.1em; flex-wrap:wrap; font-family: -apple-system, sans-serif; font-size:.86rem; }
+  nav.menu a{ color:#f2e9d3; }
+  nav.menu a:hover{ color:var(--dourado-claro); }
+
+  main{ max-width:860px; margin:0 auto; padding:1.6em 1.1em 3em; }
+
+  /* watermark card */
+  .cartao-watermark{
+    position:relative; overflow:hidden; border-radius:var(--raio);
+    background:#fff; box-shadow:var(--sombra); border:1px solid var(--linha);
+  }
+  .cartao-watermark::before{
+    content:''; position:absolute; inset:0; background-size:cover; background-position:center;
+    opacity:.10; z-index:0;
+  }
+  .cartao-watermark > *{ position:relative; z-index:1; }
+
+  .bemvindo{ text-align:center; padding:1.6em 1em 2em; }
+  .bemvindo p{ color:var(--tinta-suave); max-width:520px; margin:.6em auto 0; font-size:.98rem; }
+
+  .grade-categorias{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1em; margin-top:1.4em; }
+  .cartao-categoria{
+    padding:1.4em 1em 1.2em; text-align:center; display:flex; flex-direction:column; align-items:center; gap:.5em;
+  }
+  .foto-lider{
+    width:78px; height:78px; border-radius:50%; object-fit:cover; border:3px solid var(--dourado-claro);
+    box-shadow: 0 2px 8px rgba(0,0,0,.15); background:var(--linha);
+  }
+  .cartao-categoria h3{ font-size:1.02rem; margin:.2em 0 0; }
+  .cartao-categoria p{ font-size:.82rem; color:var(--tinta-suave); margin:0; }
+
+  .lista-anos{ display:flex; flex-wrap:wrap; gap:.6em; margin-top:1em; }
+  .chip-ano{
+    padding:.7em 1.3em; border-radius:999px; background:#fff; border:1.5px solid var(--verde);
+    color:var(--verde-escuro); font-size:.95rem; font-family:inherit;
+  }
+  .chip-ano:hover{ background:var(--verde); color:#fff; }
+
+  .item-material{
+    display:flex; justify-content:space-between; align-items:center; gap:.8em;
+    padding:.9em 1em; border-bottom:1px solid var(--linha); flex-wrap:wrap;
+  }
+  .item-material:last-child{ border-bottom:none; }
+  .item-material .info strong{ display:block; font-size:.98rem; }
+  .item-material .info span{ font-size:.78rem; color:var(--tinta-suave); font-family: -apple-system, sans-serif; }
+  .downloads{ display:flex; gap:.5em; flex-wrap:wrap; }
+
+  .voltar{ display:inline-block; margin-bottom:1em; font-family: -apple-system, sans-serif; font-size:.85rem; }
+
+  .caixa{ background:#fff; border:1px solid var(--linha); border-radius:var(--raio); padding:1.3em; box-shadow:var(--sombra); margin-bottom:1.2em; }
+
+  .rodape{
+    background:var(--tinta); color:#e8e2d4; padding:2em 1.2em; text-align:center; font-family:-apple-system, sans-serif;
+    margin-top:2em;
+  }
+  .rodape .n1{ color:#fff; font-family:Georgia,serif; font-size:1.05rem; margin-bottom:.2em;}
+  .rodape .lema{ font-size:.82rem; color:var(--dourado-claro); margin:.4em 0 1em; font-style:italic; }
+  .rodape .links{ display:flex; gap:1em; justify-content:center; flex-wrap:wrap; font-size:.8rem; margin-bottom:.8em; }
+  .rodape .links a{ color:#e8e2d4; }
+  .rodape .copy{ font-size:.72rem; color:#a89a80; }
+
+  .badge{ font-size:.7rem; padding:.2em .6em; border-radius:999px; font-family:-apple-system,sans-serif; }
+  .badge.pendente{ background:#F5E3B3; color:#7A5A00; }
+  .badge.analise{ background:#CFE3F5; color:#1A4E7A; }
+  .badge.resolvido{ background:#CDEBD8; color:#1F5C3E; }
+
+  table{ width:100%; border-collapse:collapse; font-size:.88rem; font-family:-apple-system,sans-serif; }
+  table th, table td{ text-align:left; padding:.55em .5em; border-bottom:1px solid var(--linha); vertical-align:top; }
+  table th{ color:var(--tinta-suave); font-weight:600; font-size:.78rem; text-transform:uppercase; letter-spacing:.03em; }
+
+  .grade-stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.8em; }
+  .stat{ background:#fff; border:1px solid var(--linha); border-radius:var(--raio); padding:1em; text-align:center; box-shadow:var(--sombra); }
+  .stat .num{ font-size:1.7rem; color:var(--vermelho-escuro); font-weight:600; }
+  .stat .lbl{ font-size:.76rem; color:var(--tinta-suave); font-family:-apple-system,sans-serif; }
+
+  .aba-menu{ display:flex; gap:.4em; flex-wrap:wrap; margin-bottom:1.2em; font-family:-apple-system,sans-serif; }
+  .aba-menu button{ background:#fff; color:var(--verde-escuro); border:1.5px solid var(--linha); font-size:.82rem; padding:.5em .9em; }
+  .aba-menu button.ativa{ background:var(--verde); color:#fff; border-color:var(--verde); }
+
+  .login-box{ max-width:340px; margin:3em auto; }
+  .login-box .insignia-grande{ width:64px; height:64px; border-radius:50%; margin:0 auto 1em; display:block; border:3px solid var(--dourado); object-fit:cover; }
+
+  .flutuante-msg{ position:fixed; bottom:1.2em; left:50%; transform:translateX(-50%); background:var(--tinta); color:#fff; padding:.7em 1.3em; border-radius:999px; font-size:.85rem; font-family:-apple-system,sans-serif; box-shadow:0 6px 20px rgba(0,0,0,.25); z-index:200; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  .flutuante-msg.mostrar{ opacity:1; transform:translateX(-50%) translateY(-6px); }
+
+  .linha-form{ display:grid; grid-template-columns:1fr 1fr; gap:.8em; }
+  @media(max-width:520px){ .linha-form{ grid-template-columns:1fr; } }
+
+  .fecho{ display:flex; justify-content:flex-end; gap:.6em; margin-top:1em; }
+  .search-caixa{ display:flex; gap:.5em; margin-bottom:1.4em; }
+  .search-caixa input{ flex:1; }
+
+  .vazio{ text-align:center; padding:2.5em 1em; color:var(--tinta-suave); font-family:-apple-system,sans-serif; font-size:.9rem; }
+</style>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+</head>
+<body>
+
+<header class="topo">
+  <div class="topo-inner">
+    <div class="marca">
+      <div class="insignia" id="insigniaTopo">☨</div>
+      <div class="marca-nome">
+        <div class="n1">IGREJA MUNDIAL DO MESSIAS</div>
+        <div class="n2 sans">SAGRADAS PALAVRAS</div>
+      </div>
+    </div>
+    <nav class="menu sans" id="menuPublico">
+      <a href="#/">Início</a>
+      <a href="#/palavras">Sagradas Palavras</a>
+      <a href="#/pesquisa">Pesquisar</a>
+      <a href="#/sobre">Sobre</a>
+      <a href="#/feedback">Feedback</a>
+      <a href="#/contacto">Contacto</a>
+      <a href="#/admin">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="rodape">
+  <div class="n1">IGREJA MUNDIAL DO MESSIAS</div>
+  <div class="sans" style="font-size:.85rem;">SAGRADAS PALAVRAS</div>
+  <div class="lema">"Um espaço dedicado à preservação, organização e disponibilização das Sagradas Palavras."</div>
+  <div class="links">
+    <a href="#/contacto">Contacto</a>
+    <a href="#/feedback">Feedback</a>
+    <a href="#/sobre">Sobre</a>
+    <a href="#/politica">Política de utilização</a>
+  </div>
+  <div class="copy">© <span id="anoRodape"></span> Igreja Mundial do Messias. Todos os direitos reservados.</div>
+</footer>
+
+<div class="flutuante-msg" id="toast"></div>
+
+<script>
+/* =========================================================================
+   CONFIGURAÇÃO DO FIREBASE
+   Substitua os valores abaixo pelos dados do SEU projeto Firebase
+   (Firebase Console > Definições do projeto > Configuração do SDK).
+   ========================================================================= */
+const firebaseConfig = {
+  apiKey: "COLE_AQUI_A_SUA_API_KEY",
+  authDomain: "seu-projeto.firebaseapp.com",
+  projectId: "seu-projeto",
+  storageBucket: "seu-projeto.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:xxxxxxxxxxxxxxxxxxxx"
+};
+
+const CONFIG_POR_PREENCHER = firebaseConfig.apiKey.includes('COLE_AQUI');
+
+let app, db, auth, storage;
+if(!CONFIG_POR_PREENCHER){
+  app = firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  auth = firebase.auth();
+  storage = firebase.storage();
+}
+
+/* ==================== CACHE LOCAL (alimentada pelo Firestore em tempo real) ==================== */
+let CATEGORIAS = [];
+let ANOS = [];
+let MATERIAIS = [];
+let FEEDBACKS = [];
+let DEFINICOES = {
+  nomeSite:'Igreja Mundial do Messias',
+  subtitulo:'Sagradas Palavras',
+  mensagemBoasVindas:'Seja muito bem-vindo(a)! 🙏🏾\n\nEste espaço foi criado para facilitar o acesso às Sagradas Palavras e preservar, de forma organizada, este precioso conteúdo espiritual.\n\nSe não encontrares a Sagrada Palavra que procuras, não te preocupes. Envia-nos uma mensagem através do formulário de feedback e faremos o possível para disponibilizá-la o mais breve possível.\n\nQue as Sagradas Palavras possam iluminar, orientar e fortalecer o teu caminho.',
+  sobre:'A plataforma Sagradas Palavras foi criada para facilitar a organização, preservação e consulta das Sagradas Palavras disponibilizadas pela Igreja Mundial do Messias.',
+  contacto:{ email:'', telefone:'', endereco:'' },
+  redes:{ facebook:'', instagram:'', whatsapp:'' },
+  imagemPainel:'imagem_painel.jpg'
+};
+let UTILIZADOR_ATUAL = null; // objeto do Firebase Auth quando autenticado
+
+const CATEGORIAS_SEED = [
+  {id:'meishu', nome:'Meishu-Sama', descricao:'Fundador da Igreja Mundial do Messias.', imagem:'imagem_meishu_sama.jpg'},
+  {id:'nidai', nome:'Nidai-Sama', descricao:'Segunda liderança espiritual da Igreja.', imagem:'imagem_nidai_sama.jpg'},
+  {id:'sandai', nome:'Sandai-Sama', descricao:'Terceira liderança espiritual da Igreja.', imagem:'imagem_sandai_sama.jpg'},
+  {id:'kyoshu', nome:'Kyoshu-Sama', descricao:'Liderança espiritual da Igreja.', imagem:'imagem_kyoshu-Sama.jpg'},
+  {id:'masaaki', nome:'Masaaki-Sama', descricao:'Liderança espiritual da Igreja.', imagem:'imagem_masaaki-sama.jpeg'}
+];
+
+function novoId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function escapar(s){ return (s||'').toString().replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function quebrarLinhas(s){ return escapar(s).replace(/\n/g,'<br>'); }
+function mostrarToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('mostrar');
+  setTimeout(()=>t.classList.remove('mostrar'), 2400);
+}
+
+/* ==================== INICIALIZAÇÃO / LIGAÇÕES EM TEMPO REAL ==================== */
+async function iniciarFirebase(){
+  // Semeia as categorias iniciais e as definições, apenas se ainda não existirem
+  const snapCat = await db.collection('categorias').limit(1).get();
+  if(snapCat.empty){
+    const lote = db.batch();
+    CATEGORIAS_SEED.forEach(c=> lote.set(db.collection('categorias').doc(c.id), {nome:c.nome, descricao:c.descricao, imagem:c.imagem}));
+    await lote.commit();
+  }
+  const defRef = db.collection('config').doc('definicoes');
+  const snapDef = await defRef.get();
+  if(!snapDef.exists){ await defRef.set(DEFINICOES); }
+
+  db.collection('categorias').onSnapshot(snap=>{
+    CATEGORIAS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    render();
+  }, erroFirestore);
+
+  db.collection('anos').onSnapshot(snap=>{
+    ANOS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    render();
+  }, erroFirestore);
+
+  db.collection('materiais').orderBy('criadoEm','desc').onSnapshot(snap=>{
+    MATERIAIS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    render();
+  }, erroFirestore);
+
+  defRef.onSnapshot(snap=>{
+    if(snap.exists){ DEFINICOES = { ...DEFINICOES, ...snap.data() }; render(); }
+  }, erroFirestore);
+
+  auth.onAuthStateChanged(user=>{
+    UTILIZADOR_ATUAL = user;
+    if(user){
+      db.collection('feedbacks').orderBy('data','desc').onSnapshot(snap=>{
+        FEEDBACKS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+        render();
+      }, erroFirestore);
+    }
+    render();
+  });
+}
+
+function erroFirestore(err){
+  console.error(err);
+  mostrarToast('Erro de ligação ao Firebase: ' + err.message);
+}
+
+/* ==================== ROTEAMENTO ==================== */
+window.addEventListener('hashchange', render);
+window.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('anoRodape').textContent = new Date().getFullYear();
+  if(!location.hash) location.hash = '#/';
+  if(CONFIG_POR_PREENCHER){
+    document.getElementById('app').innerHTML = viewConfigPorPreencher();
+    return;
+  }
+  iniciarFirebase();
+  render();
+});
+
+function viewConfigPorPreencher(){
+  return `<div class="caixa" style="max-width:520px;margin:2em auto;">
+    <h2>⚙️ Configuração do Firebase pendente</h2>
+    <p class="sans" style="font-size:.9rem;">Este site ainda não está ligado a um projeto Firebase. Abra o ficheiro HTML num editor de texto, procure por <code>firebaseConfig</code> no topo do &lt;script&gt; e substitua pelos dados do seu projeto Firebase (Firebase Console → Definições do projeto → Configuração do SDK).</p>
+    <p class="sans" style="font-size:.9rem;">Depois de preencher, guarde o ficheiro e abra novamente.</p>
+  </div>`;
+}
+
+function render(){
+  if(CONFIG_POR_PREENCHER) return;
+  const hash = location.hash || '#/';
+  const partes = hash.replace('#/','').split('/').filter(Boolean);
+  const app = document.getElementById('app');
+  const insig = document.getElementById('insigniaTopo');
+  if(insig) insig.innerHTML = `<img src="${escapar(DEFINICOES.imagemPainel)}" onerror="this.parentNode.textContent='☨'">`;
+
+  if(partes[0] === 'palavras' && !partes[1]) return app.innerHTML = viewPalavras();
+  if(partes[0] === 'palavras' && partes[1] && !partes[2]) return app.innerHTML = viewAnos(partes[1]);
+  if(partes[0] === 'palavras' && partes[1] && partes[2]) return app.innerHTML = viewMateriais(partes[1], decodeURIComponent(partes[2]));
+  if(partes[0] === 'material' && partes[1]) return app.innerHTML = viewMaterialDetalhe(partes[1]);
+  if(partes[0] === 'pesquisa') return app.innerHTML = viewPesquisa();
+  if(partes[0] === 'sobre') return app.innerHTML = viewSobre();
+  if(partes[0] === 'contacto') return app.innerHTML = viewContacto();
+  if(partes[0] === 'politica') return app.innerHTML = viewPolitica();
+  if(partes[0] === 'feedback') return app.innerHTML = viewFeedback();
+  if(partes[0] === 'admin' && !partes[1]) return renderAdminEntrada();
+  if(partes[0] === 'admin' && partes[1]) return renderAdminArea(partes[1]);
+  return app.innerHTML = viewHome();
+}
+
+/* ==================== VIEWS PÚBLICAS ==================== */
+function viewHome(){
+  const d = DEFINICOES;
+  return `
+    <div class="cartao-watermark" style="--bg:url('${escapar(d.imagemPainel)}')">
+      <style>.cartao-watermark::before{background-image:var(--bg);}</style>
+      <div class="bemvindo">
+        <h1>${escapar(d.nomeSite)}</h1>
+        <p class="sans">${quebrarLinhas(d.mensagemBoasVindas)}</p>
+      </div>
+    </div>
+    <h2 style="margin-top:1.8em;">Sagradas Palavras</h2>
+    <div class="grade-categorias">
+      ${CATEGORIAS.map(c=>`
+        <div class="cartao-watermark cartao-categoria" style="--bg:url('${escapar(c.imagem)}')">
+          <style>.cartao-watermark::before{background-image:var(--bg);}</style>
+          <img class="foto-lider" src="${escapar(c.imagem)}" alt="${escapar(c.nome)}" onerror="this.style.opacity=0.15">
+          <h3>Sagradas Palavras de ${escapar(c.nome)}</h3>
+          <p>${escapar(c.descricao)}</p>
+          <a class="btn dourado pequeno" href="#/palavras/${c.id}">Acessar</a>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function viewPalavras(){
+  return `
+    <a class="voltar" href="#/">&larr; Início</a>
+    <h2>Sagradas Palavras</h2>
+    <p class="sans" style="color:var(--tinta-suave); font-size:.9rem;">Selecione uma categoria para consultar os anos disponíveis.</p>
+    <div class="grade-categorias">
+      ${CATEGORIAS.map(c=>`
+        <div class="cartao-watermark cartao-categoria" style="--bg:url('${escapar(c.imagem)}')">
+          <style>.cartao-watermark::before{background-image:var(--bg);}</style>
+          <img class="foto-lider" src="${escapar(c.imagem)}" alt="${escapar(c.nome)}" onerror="this.style.opacity=0.15">
+          <h3>${escapar(c.nome)}</h3>
+          <p>${escapar(c.descricao)}</p>
+          <a class="btn dourado pequeno" href="#/palavras/${c.id}">Acessar</a>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function viewAnos(catId){
+  const cat = CATEGORIAS.find(c=>c.id===catId);
+  if(!cat) return `<p>Categoria não encontrada.</p><a href="#/palavras">&larr; Voltar</a>`;
+  const anos = ANOS.filter(a=>a.categoriaId===catId).map(a=>a.ano).sort((a,b)=>b-a);
+  return `
+    <a class="voltar" href="#/palavras">&larr; Sagradas Palavras</a>
+    <h2>Sagradas Palavras de ${escapar(cat.nome)}</h2>
+    <p class="sans" style="color:var(--tinta-suave); font-size:.9rem;">Selecione o ano que deseja consultar.</p>
+    ${anos.length ? `<div class="lista-anos">${anos.map(a=>`<a class="chip-ano" href="#/palavras/${catId}/${a}">${a}</a>`).join('')}</div>`
+      : `<div class="vazio">Ainda não existem anos publicados nesta categoria.<br>Utilize o formulário de feedback para solicitar um material.</div>`}
+  `;
+}
+
+function badgeMaterialDownloads(m){
+  const links = [];
+  if(m.pdfUrl) links.push(`<button class="btn pequeno vermelho" onclick="baixarMaterial('${m.id}','pdf')">📄 Baixar PDF</button>`);
+  if(m.wordUrl) links.push(`<button class="btn pequeno secundario" onclick="baixarMaterial('${m.id}','word')">📝 Baixar Word</button>`);
+  if(!links.length) links.push(`<span class="sans" style="font-size:.78rem;color:var(--tinta-suave);">Sem ficheiro disponível</span>`);
+  return links.join('');
+}
+
+function viewMateriais(catId, ano){
+  const cat = CATEGORIAS.find(c=>c.id===catId);
+  if(!cat) return `<p>Categoria não encontrada.</p>`;
+  const materiais = MATERIAIS.filter(m=>m.categoriaId===catId && String(m.ano)===String(ano) && m.estadoPublicacao==='Publicado')
+    .sort((a,b)=> new Date(a.data||0) - new Date(b.data||0));
+  return `
+    <a class="voltar" href="#/palavras/${catId}">&larr; ${escapar(cat.nome)}</a>
+    <h2>${escapar(cat.nome)} — ${escapar(ano)}</h2>
+    <div class="caixa" style="padding:0;">
+      ${materiais.length ? materiais.map(m=>`
+        <div class="item-material">
+          <div class="info">
+            <strong><a href="#/material/${m.id}">${escapar(m.titulo)}</a></strong>
+            <span class="sans">${m.data ? new Date(m.data).toLocaleDateString('pt-PT') : ''}</span>
+          </div>
+          <div class="downloads">${badgeMaterialDownloads(m)}</div>
+        </div>
+      `).join('') : `<div class="vazio">Nenhuma Sagrada Palavra publicada para este ano ainda.</div>`}
+    </div>
+  `;
+}
+
+function viewMaterialDetalhe(id){
+  const m = MATERIAIS.find(x=>x.id===id);
+  if(!m) return `<p>Material não encontrado.</p>`;
+  const cat = CATEGORIAS.find(c=>c.id===m.categoriaId);
+  return `
+    <a class="voltar" href="#/palavras/${m.categoriaId}/${m.ano}">&larr; ${escapar(cat?cat.nome:'')} — ${escapar(m.ano)}</a>
+    <div class="caixa">
+      <h2>${escapar(m.titulo)}</h2>
+      <p class="sans" style="font-size:.82rem;color:var(--tinta-suave);">${escapar(cat?cat.nome:'')} · ${escapar(m.ano)} ${m.data?(' · '+new Date(m.data).toLocaleDateString('pt-PT')):''}</p>
+      ${m.descricao ? `<p>${quebrarLinhas(m.descricao)}</p>` : ''}
+      <div class="downloads" style="margin-top:1em;">${badgeMaterialDownloads(m)}</div>
+      <div style="margin-top:1.2em;">
+        <button class="btn secundario pequeno" onclick="partilharMaterial('${m.id}')">📤 Partilhar</button>
+      </div>
+    </div>
+  `;
+}
+
+function partilharMaterial(id){
+  const url = location.origin + location.pathname + '#/material/' + id;
+  if(navigator.share){ navigator.share({title:'Sagradas Palavras', url}); }
+  else{ navigator.clipboard?.writeText(url); mostrarToast('Link copiado para a área de transferência'); }
+}
+
+async function baixarMaterial(id, tipo){
+  const m = MATERIAIS.find(x=>x.id===id);
+  if(!m) return;
+  const url = tipo==='pdf' ? m.pdfUrl : m.wordUrl;
+  if(!url){ mostrarToast('Ficheiro indisponível'); return; }
+  window.open(url, '_blank');
+  try{
+    await db.collection('materiais').doc(id).update({
+      downloads: firebase.firestore.FieldValue.increment(1)
+    });
+  }catch(e){ /* contagem falhou silenciosamente, não bloqueia o download */ }
+}
+
+function viewPesquisa(){
+  return `
+    <h2>Pesquisar Sagradas Palavras</h2>
+    <div class="search-caixa">
+      <input id="campoPesquisa" placeholder="Ex: Masaaki 2024, título, palavra-chave..." oninput="executarPesquisa()">
+    </div>
+    <div id="resultadosPesquisa"><div class="vazio">Escreva algo para pesquisar por nome, ano, data, categoria ou palavra-chave.</div></div>
+  `;
+}
+function executarPesquisa(){
+  const termo = document.getElementById('campoPesquisa').value.trim().toLowerCase();
+  const box = document.getElementById('resultadosPesquisa');
+  if(!termo){ box.innerHTML = `<div class="vazio">Escreva algo para pesquisar.</div>`; return; }
+  const partes = termo.split(/\s+/);
+  const resultados = MATERIAIS.filter(m=>{
+    if(m.estadoPublicacao!=='Publicado') return false;
+    const cat = CATEGORIAS.find(c=>c.id===m.categoriaId);
+    const alvo = [m.titulo, m.descricao, m.palavrasChave, m.ano, cat?cat.nome:'', m.data].join(' ').toLowerCase();
+    return partes.every(p=>alvo.includes(p));
+  });
+  if(!resultados.length){ box.innerHTML = `<div class="vazio">Nenhum resultado encontrado para "${escapar(termo)}".</div>`; return; }
+  box.innerHTML = `<div class="caixa" style="padding:0;">${resultados.map(m=>{
+    const cat = CATEGORIAS.find(c=>c.id===m.categoriaId);
+    return `<div class="item-material">
+      <div class="info">
+        <strong><a href="#/material/${m.id}">${escapar(m.titulo)}</a></strong>
+        <span class="sans">${escapar(cat?cat.nome:'')} · ${escapar(m.ano)}</span>
+      </div>
+      <div class="downloads">${badgeMaterialDownloads(m)}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function viewSobre(){
+  return `<h2>Sobre</h2><div class="caixa">${quebrarLinhas(DEFINICOES.sobre)}</div>`;
+}
+function viewPolitica(){
+  return `<h2>Política de utilização</h2><div class="caixa sans" style="font-size:.9rem;">
+    <p>Os conteúdos disponibilizados nesta plataforma destinam-se exclusivamente à consulta espiritual dos membros e visitantes da Igreja Mundial do Messias.</p>
+    <p>É proibida a reprodução comercial dos materiais sem autorização da instituição.</p>
+  </div>`;
+}
+function viewContacto(){
+  const c = DEFINICOES.contacto;
+  return `<h2>Contacto</h2>
+    <div class="caixa sans" style="font-size:.92rem;">
+      <p>📧 ${escapar(c.email)}</p>
+      <p>📞 ${escapar(c.telefone)}</p>
+      <p>📍 ${escapar(c.endereco)}</p>
+    </div>`;
+}
+
+function viewFeedback(){
+  return `
+    <h2>Enviar Feedback</h2>
+    <p class="sans" style="font-size:.88rem;color:var(--tinta-suave);">Não encontraste a Sagrada Palavra que procuras? Conta-nos aqui.</p>
+    <form class="caixa" onsubmit="enviarFeedback(event)">
+      <div class="linha-form">
+        <div><label>Nome (opcional)</label><input name="nome"></div>
+        <div><label>Contacto / E-mail (opcional)</label><input name="contacto"></div>
+      </div>
+      <div class="linha-form">
+        <div><label>Categoria</label>
+          <select name="categoriaId">
+            <option value="">Selecione</option>
+            ${CATEGORIAS.map(c=>`<option value="${c.id}">${escapar(c.nome)}</option>`).join('')}
+          </select>
+        </div>
+        <div><label>Ano</label><input name="ano" placeholder="Ex: 2024"></div>
+      </div>
+      <label>Nome / data da Sagrada Palavra</label>
+      <input name="materialRef" placeholder="Ex: Sagrada Palavra de Março de 2024">
+      <label>Mensagem</label>
+      <textarea name="mensagem" rows="4" required placeholder="Descreva o que procura..."></textarea>
+      <div class="fecho"><button class="btn dourado" type="submit">Enviar</button></div>
+    </form>
+  `;
+}
+async function enviarFeedback(ev){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  try{
+    await db.collection('feedbacks').add({
+      nome: f.get('nome')||'', contacto: f.get('contacto')||'',
+      categoriaId: f.get('categoriaId')||'', ano: f.get('ano')||'',
+      materialRef: f.get('materialRef')||'', mensagem: f.get('mensagem'),
+      data: new Date().toISOString(), estado:'Pendente'
+    });
+    ev.target.reset();
+    mostrarToast('Feedback enviado. Obrigado!');
+  }catch(e){ mostrarToast('Erro ao enviar: ' + e.message); }
+}
+
+/* ==================== ÁREA ADMIN ==================== */
+function renderAdminEntrada(){
+  const app = document.getElementById('app');
+  if(UTILIZADOR_ATUAL){ location.hash = '#/admin/dashboard'; return; }
+  app.innerHTML = `
+    <div class="login-box caixa">
+      <img class="insignia-grande" src="${escapar(DEFINICOES.imagemPainel)}" onerror="this.style.display='none'">
+      <h2 style="text-align:center;">Área Administrativa</h2>
+      <form onsubmit="submeterLogin(event)">
+        <label>E-mail</label><input name="email" type="email" required autocomplete="username">
+        <label>Palavra-passe</label><input name="senha" type="password" required autocomplete="current-password">
+        <div id="erroLogin" class="sans" style="color:var(--vermelho-escuro);font-size:.82rem;margin-top:.6em;"></div>
+        <div class="fecho" style="justify-content:center;"><button class="btn dourado" type="submit">Entrar</button></div>
+      </form>
+      <p class="sans" style="font-size:.75rem;color:var(--tinta-suave);text-align:center;margin-top:1em;">Os utilizadores administradores são criados diretamente no Firebase Console (Authentication → Users), nunca a partir deste formulário.</p>
+    </div>
+  `;
+}
+async function submeterLogin(ev){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  const erro = document.getElementById('erroLogin');
+  erro.textContent = '';
+  try{
+    await auth.signInWithEmailAndPassword(f.get('email'), f.get('senha'));
+    location.hash = '#/admin/dashboard';
+  }catch(e){
+    erro.textContent = 'E-mail ou palavra-passe incorretos.';
+  }
+}
+function terminarSessao(){ auth.signOut().then(()=> location.hash = '#/admin'); }
+
+function exigirAuth(){
+  if(!UTILIZADOR_ATUAL){ location.hash = '#/admin'; return false; }
+  return true;
+}
+
+function menuAdmin(ativo){
+  const itens = [
+    ['dashboard','📊 Dashboard'], ['categorias','🗂️ Categorias'], ['anos','📅 Anos'],
+    ['materiais','📄 Materiais'], ['feedbacks','📩 Feedbacks'], ['definicoes','⚙️ Definições'], ['conta','👤 Conta']
+  ];
+  return `<div class="aba-menu">
+    ${itens.map(([id,label])=>`<button class="${ativo===id?'ativa':''}" onclick="location.hash='#/admin/${id}'">${label}</button>`).join('')}
+    <button style="margin-left:auto;background:var(--vermelho);color:#fff;" onclick="if(confirm('Terminar sessão?')) terminarSessao()">🚪 Sair</button>
+  </div>`;
+}
+
+function renderAdminArea(secao){
+  if(!exigirAuth()) return;
+  const app = document.getElementById('app');
+  const funcs = {
+    dashboard: adminDashboard, categorias: adminCategorias, anos: adminAnos,
+    materiais: adminMateriais, feedbacks: adminFeedbacks, definicoes: adminDefinicoes, conta: adminConta
+  };
+  const fn = funcs[secao] || adminDashboard;
+  app.innerHTML = menuAdmin(secao) + fn();
+}
+
+function adminDashboard(){
+  const totalPdf = MATERIAIS.filter(m=>m.pdfUrl).length;
+  const totalWord = MATERIAIS.filter(m=>m.wordUrl).length;
+  const totalAnos = new Set(ANOS.map(a=>a.ano)).size;
+  const pendentes = FEEDBACKS.filter(f=>f.estado==='Pendente').length;
+  const recentes = [...MATERIAIS].slice(0,5);
+  return `
+    <h2>Dashboard</h2>
+    ${pendentes ? `<div class="caixa sans" style="border-left:4px solid var(--dourado); font-size:.9rem;">🔔 <strong>${pendentes}</strong> novo(s) feedback(s) pendente(s). <a href="#/admin/feedbacks">Ver</a></div>` : ''}
+    <div class="grade-stats">
+      <div class="stat"><div class="num">${MATERIAIS.length}</div><div class="lbl">Sagradas Palavras</div></div>
+      <div class="stat"><div class="num">${totalPdf}</div><div class="lbl">PDFs</div></div>
+      <div class="stat"><div class="num">${totalWord}</div><div class="lbl">Documentos Word</div></div>
+      <div class="stat"><div class="num">${totalAnos}</div><div class="lbl">Anos cadastrados</div></div>
+      <div class="stat"><div class="num">${CATEGORIAS.length}</div><div class="lbl">Categorias</div></div>
+      <div class="stat"><div class="num">${pendentes}</div><div class="lbl">Feedbacks pendentes</div></div>
+    </div>
+    <h3 style="margin-top:1.6em;">Adicionados recentemente</h3>
+    <div class="caixa" style="padding:0;">
+      ${recentes.length ? recentes.map(m=>`<div class="item-material"><div class="info"><strong>${escapar(m.titulo)}</strong><span class="sans">${escapar(m.ano)}</span></div></div>`).join('') : `<div class="vazio">Nenhum material adicionado ainda.</div>`}
+    </div>
+  `;
+}
+
+function adminCategorias(){
+  return `
+    <h2>Categorias</h2>
+    <div class="caixa" style="padding:0;">
+      ${CATEGORIAS.map(c=>`
+        <div class="item-material">
+          <div class="info" style="display:flex;align-items:center;gap:.7em;">
+            <img src="${escapar(c.imagem)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" onerror="this.style.visibility='hidden'">
+            <div><strong>${escapar(c.nome)}</strong><br><span class="sans">${escapar(c.descricao)}</span></div>
+          </div>
+          <div class="downloads">
+            <button class="btn pequeno secundario" onclick="editarCategoria('${c.id}')">Editar</button>
+            <button class="btn pequeno vermelho" onclick="removerCategoria('${c.id}')">Remover</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="fecho"><button class="btn dourado" onclick="editarCategoria(null)">+ Adicionar categoria</button></div>
+    <div id="formCategoriaBox"></div>
+  `;
+}
+function editarCategoria(id){
+  const c = id ? CATEGORIAS.find(x=>x.id===id) : {id:'', nome:'', descricao:'', imagem:''};
+  document.getElementById('formCategoriaBox').innerHTML = `
+    <form class="caixa" onsubmit="guardarCategoria(event,'${id||''}')">
+      <label>Nome</label><input name="nome" value="${escapar(c.nome)}" required>
+      <label>Descrição</label><textarea name="descricao" rows="2">${escapar(c.descricao)}</textarea>
+      <label>Nome do ficheiro de imagem (na mesma pasta)</label>
+      <input name="imagem" value="${escapar(c.imagem)}" placeholder="ex: imagem_novo_lider.jpg" required>
+      <div class="fecho"><button class="btn secundario" type="button" onclick="document.getElementById('formCategoriaBox').innerHTML=''">Cancelar</button><button class="btn dourado" type="submit">Guardar</button></div>
+    </form>
+  `;
+}
+async function guardarCategoria(ev,id){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  const dados = { nome:f.get('nome'), descricao:f.get('descricao'), imagem:f.get('imagem') };
+  try{
+    if(id){ await db.collection('categorias').doc(id).update(dados); }
+    else{
+      const slug = dados.nome.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,24) || novoId();
+      await db.collection('categorias').doc(slug).set(dados);
+    }
+    mostrarToast('Categoria guardada');
+    document.getElementById('formCategoriaBox').innerHTML = '';
+  }catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+async function removerCategoria(id){
+  if(!confirm('Remover esta categoria? Os anos e materiais associados não serão apagados automaticamente.')) return;
+  try{ await db.collection('categorias').doc(id).delete(); mostrarToast('Categoria removida'); }
+  catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+
+function adminAnos(){
+  return `
+    <h2>Anos</h2>
+    <form class="caixa" onsubmit="adicionarAno(event)">
+      <div class="linha-form">
+        <div><label>Categoria</label>
+          <select name="categoriaId" required>${CATEGORIAS.map(c=>`<option value="${c.id}">${escapar(c.nome)}</option>`).join('')}</select>
+        </div>
+        <div><label>Ano</label><input name="ano" type="number" required placeholder="Ex: 2026"></div>
+      </div>
+      <div class="fecho"><button class="btn dourado" type="submit">+ Adicionar ano</button></div>
+    </form>
+    ${CATEGORIAS.map(c=>{
+      const anos = ANOS.filter(a=>a.categoriaId===c.id).sort((a,b)=>b.ano-a.ano);
+      return `<div class="caixa">
+        <h3>${escapar(c.nome)}</h3>
+        ${anos.length ? `<div class="lista-anos">${anos.map(a=>`
+          <span class="chip-ano" style="display:flex;align-items:center;gap:.5em;">
+            ${a.ano}
+            <button class="sans" style="background:none;border:none;color:var(--vermelho-escuro);padding:0;font-size:1rem;" onclick="removerAno('${a.id}')" title="Remover">✕</button>
+          </span>`).join('')}</div>` : `<p class="sans" style="font-size:.85rem;color:var(--tinta-suave);">Nenhum ano cadastrado.</p>`}
+      </div>`;
+    }).join('')}
+  `;
+}
+async function adicionarAno(ev){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  const categoriaId = f.get('categoriaId'), ano = parseInt(f.get('ano'),10);
+  if(ANOS.some(a=>a.categoriaId===categoriaId && a.ano===ano)){ mostrarToast('Este ano já existe nesta categoria'); return; }
+  try{ await db.collection('anos').add({ categoriaId, ano }); mostrarToast('Ano adicionado'); }
+  catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+async function removerAno(id){
+  if(!confirm('Remover este ano?')) return;
+  try{ await db.collection('anos').doc(id).delete(); }
+  catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+
+function adminMateriais(){
+  const lista = [...MATERIAIS];
+  return `
+    <h2>Materiais</h2>
+    <div class="fecho" style="justify-content:flex-start;"><button class="btn dourado" onclick="editarMaterial(null)">+ Adicionar material</button></div>
+    <div id="formMaterialBox"></div>
+    <div class="caixa" style="padding:0;margin-top:1em;">
+      ${lista.length ? lista.map(m=>{
+        const cat = CATEGORIAS.find(c=>c.id===m.categoriaId);
+        return `<div class="item-material">
+          <div class="info">
+            <strong>${escapar(m.titulo)}</strong>
+            <span class="sans">${escapar(cat?cat.nome:'—')} · ${escapar(m.ano)} · ${m.estadoPublicacao} · ${m.downloads||0} download(s)</span>
+          </div>
+          <div class="downloads">
+            <button class="btn pequeno secundario" onclick="editarMaterial('${m.id}')">Editar</button>
+            <button class="btn pequeno vermelho" onclick="removerMaterial('${m.id}')">Remover</button>
+          </div>
+        </div>`;
+      }).join('') : `<div class="vazio">Nenhum material adicionado.</div>`}
+    </div>
+  `;
+}
+function editarMaterial(id){
+  const m = id ? MATERIAIS.find(x=>x.id===id) : {categoriaId:'', ano:'', data:'', titulo:'', descricao:'', palavrasChave:'', estadoPublicacao:'Publicado'};
+  document.getElementById('formMaterialBox').innerHTML = `
+    <form class="caixa" id="formMaterial" onsubmit="guardarMaterial(event,'${id||''}')">
+      <div class="linha-form">
+        <div><label>Categoria</label>
+          <select name="categoriaId" required>${CATEGORIAS.map(c=>`<option value="${c.id}" ${c.id===m.categoriaId?'selected':''}>${escapar(c.nome)}</option>`).join('')}</select>
+        </div>
+        <div><label>Ano</label><input name="ano" type="number" value="${escapar(m.ano)}" required></div>
+      </div>
+      <div class="linha-form">
+        <div><label>Data</label><input name="data" type="date" value="${m.data ? m.data.slice(0,10) : ''}"></div>
+        <div><label>Publicação</label>
+          <select name="estadoPublicacao"><option ${m.estadoPublicacao==='Publicado'?'selected':''}>Publicado</option><option ${m.estadoPublicacao==='Rascunho'?'selected':''}>Rascunho</option></select>
+        </div>
+      </div>
+      <label>Título</label><input name="titulo" value="${escapar(m.titulo)}" required placeholder="Ex: Sagrada Palavra — Março de 2024">
+      <label>Descrição (opcional)</label><textarea name="descricao" rows="2">${escapar(m.descricao)}</textarea>
+      <label>Palavras-chave</label><input name="palavrasChave" value="${escapar(m.palavrasChave)}" placeholder="separadas por vírgula">
+      <div class="linha-form">
+        <div><label>Ficheiro PDF ${m.pdfNome?`(atual: ${escapar(m.pdfNome)})`:''}</label><input type="file" accept="application/pdf" name="pdf"></div>
+        <div><label>Ficheiro Word ${m.wordNome?`(atual: ${escapar(m.wordNome)})`:''}</label><input type="file" accept=".doc,.docx" name="word"></div>
+      </div>
+      <p class="sans" style="font-size:.75rem;color:var(--tinta-suave);" id="estadoUpload"></p>
+      <div class="fecho"><button class="btn secundario" type="button" onclick="document.getElementById('formMaterialBox').innerHTML=''">Cancelar</button><button class="btn dourado" type="submit">Publicar Material</button></div>
+    </form>
+  `;
+}
+async function enviarParaStorage(materialId, file, tipo){
+  const caminho = `materiais/${materialId}/${tipo}_${file.name}`;
+  const ref = storage.ref().child(caminho);
+  await ref.put(file);
+  const url = await ref.getDownloadURL();
+  return { url, nome: file.name };
+}
+async function guardarMaterial(ev,id){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  const pdfFile = ev.target.querySelector('input[name=pdf]').files[0];
+  const wordFile = ev.target.querySelector('input[name=word]').files[0];
+  const estadoTxt = document.getElementById('estadoUpload');
+  const btnSubmit = ev.target.querySelector('button[type=submit]');
+  btnSubmit.disabled = true;
+
+  const dadosBase = {
+    categoriaId: f.get('categoriaId'), ano: f.get('ano'), data: f.get('data'),
+    titulo: f.get('titulo'), descricao: f.get('descricao'), palavrasChave: f.get('palavrasChave'),
+    estadoPublicacao: f.get('estadoPublicacao')
+  };
+
+  try{
+    let materialId = id;
+    if(!materialId){
+      estadoTxt.textContent = 'A criar registo...';
+      const ref = await db.collection('materiais').add({ ...dadosBase, downloads:0, criadoEm: Date.now() });
+      materialId = ref.id;
+    }else{
+      await db.collection('materiais').doc(materialId).update(dadosBase);
+    }
+
+    if(pdfFile){
+      estadoTxt.textContent = 'A carregar PDF...';
+      const r = await enviarParaStorage(materialId, pdfFile, 'pdf');
+      await db.collection('materiais').doc(materialId).update({ pdfUrl:r.url, pdfNome:r.nome });
+    }
+    if(wordFile){
+      estadoTxt.textContent = 'A carregar Word...';
+      const r = await enviarParaStorage(materialId, wordFile, 'word');
+      await db.collection('materiais').doc(materialId).update({ wordUrl:r.url, wordNome:r.nome });
+    }
+
+    const ano = parseInt(dadosBase.ano,10);
+    if(!ANOS.some(a=>a.categoriaId===dadosBase.categoriaId && a.ano===ano)){
+      await db.collection('anos').add({ categoriaId: dadosBase.categoriaId, ano });
+    }
+
+    mostrarToast('Material guardado');
+    document.getElementById('formMaterialBox').innerHTML = '';
+    renderAdminArea('materiais');
+  }catch(e){
+    mostrarToast('Erro ao guardar: ' + e.message);
+    btnSubmit.disabled = false;
+  }
+}
+async function removerMaterial(id){
+  if(!confirm('Remover este material?')) return;
+  try{ await db.collection('materiais').doc(id).delete(); mostrarToast('Material removido'); }
+  catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+
+function adminFeedbacks(){
+  const lista = [...FEEDBACKS];
+  const badge = e => e==='Pendente' ? '<span class="badge pendente">🟡 Pendente</span>' : e==='Em análise' ? '<span class="badge analise">🔵 Em análise</span>' : '<span class="badge resolvido">🟢 Resolvido</span>';
+  return `
+    <h2>Feedbacks / Solicitações</h2>
+    <table>
+      <thead><tr><th>Data</th><th>Nome</th><th>Categoria/Ano</th><th>Mensagem</th><th>Estado</th><th></th></tr></thead>
+      <tbody>
+        ${lista.length ? lista.map(fb=>{
+          const cat = CATEGORIAS.find(c=>c.id===fb.categoriaId);
+          return `<tr>
+            <td>${new Date(fb.data).toLocaleDateString('pt-PT')}</td>
+            <td>${escapar(fb.nome||'—')}<br><span style="font-size:.75rem;color:var(--tinta-suave);">${escapar(fb.contacto||'')}</span></td>
+            <td>${escapar(cat?cat.nome:'—')} ${escapar(fb.ano||'')}<br><span style="font-size:.75rem;color:var(--tinta-suave);">${escapar(fb.materialRef||'')}</span></td>
+            <td style="max-width:220px;">${escapar(fb.mensagem)}</td>
+            <td>${badge(fb.estado)}</td>
+            <td>
+              <select onchange="mudarEstadoFeedback('${fb.id}', this.value)">
+                <option ${fb.estado==='Pendente'?'selected':''}>Pendente</option>
+                <option ${fb.estado==='Em análise'?'selected':''}>Em análise</option>
+                <option ${fb.estado==='Resolvido'?'selected':''}>Resolvido</option>
+              </select>
+            </td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="6" class="vazio">Nenhum feedback recebido.</td></tr>`}
+      </tbody>
+    </table>
+  `;
+}
+async function mudarEstadoFeedback(id, estado){
+  try{ await db.collection('feedbacks').doc(id).update({ estado }); mostrarToast('Estado atualizado'); }
+  catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+
+function adminDefinicoes(){
+  const d = DEFINICOES;
+  return `
+    <h2>Definições</h2>
+    <form class="caixa" onsubmit="guardarDefinicoesGerais(event)">
+      <label>Nome do site</label><input name="nomeSite" value="${escapar(d.nomeSite)}">
+      <label>Subtítulo</label><input name="subtitulo" value="${escapar(d.subtitulo)}">
+      <label>Mensagem de boas-vindas</label><textarea name="mensagemBoasVindas" rows="6">${escapar(d.mensagemBoasVindas)}</textarea>
+      <label>Texto da página "Sobre"</label><textarea name="sobre" rows="4">${escapar(d.sobre)}</textarea>
+      <label>Imagem da insígnia/painel (nome do ficheiro)</label><input name="imagemPainel" value="${escapar(d.imagemPainel)}">
+      <div class="fecho"><button class="btn dourado" type="submit">Guardar</button></div>
+    </form>
+    <form class="caixa" onsubmit="guardarDefinicoesContacto(event)">
+      <h3>Contacto e redes sociais</h3>
+      <label>E-mail</label><input name="email" value="${escapar(d.contacto.email)}">
+      <label>Telefone</label><input name="telefone" value="${escapar(d.contacto.telefone)}">
+      <label>Endereço</label><input name="endereco" value="${escapar(d.contacto.endereco)}">
+      <div class="linha-form">
+        <div><label>Facebook</label><input name="facebook" value="${escapar(d.redes.facebook)}"></div>
+        <div><label>Instagram</label><input name="instagram" value="${escapar(d.redes.instagram)}"></div>
+      </div>
+      <label>WhatsApp</label><input name="whatsapp" value="${escapar(d.redes.whatsapp)}">
+      <div class="fecho"><button class="btn dourado" type="submit">Guardar</button></div>
+    </form>
+  `;
+}
+async function guardarDefinicoesGerais(ev){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  try{
+    await db.collection('config').doc('definicoes').update({
+      nomeSite:f.get('nomeSite'), subtitulo:f.get('subtitulo'),
+      mensagemBoasVindas:f.get('mensagemBoasVindas'), sobre:f.get('sobre'),
+      imagemPainel:f.get('imagemPainel')
+    });
+    mostrarToast('Definições guardadas');
+  }catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+async function guardarDefinicoesContacto(ev){
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  try{
+    await db.collection('config').doc('definicoes').update({
+      contacto: { email:f.get('email'), telefone:f.get('telefone'), endereco:f.get('endereco') },
+      redes: { facebook:f.get('facebook'), instagram:f.get('instagram'), whatsapp:f.get('whatsapp') }
+    });
+    mostrarToast('Contacto guardado');
+  }catch(e){ mostrarToast('Erro: ' + e.message); }
+}
+
+function adminConta(){
+  const u = UTILIZADOR_ATUAL;
+  return `
+    <h2>Conta Administrativa</h2>
+    <div class="caixa">
+      <p class="sans">E-mail atual: <strong>${escapar(u ? u.email : '')}</strong></p>
+      <form onsubmit="alterarPalavraPasse(event)">
+        <label>Nova palavra-passe</label><input name="novaSenha" type="password" required minlength="6">
+        <div class="fecho"><button class="btn dourado" type="submit">Alterar palavra-passe</button></div>
+      </form>
+      <p class="sans" style="font-size:.75rem;color:var(--tinta-suave);margin-top:1em;">Para criar outros administradores ou alterar o e-mail de acesso, faça-o no Firebase Console → Authentication → Users.</p>
+    </div>
+  `;
+}
+async function alterarPalavraPasse(ev){
+  ev.preventDefault();
+  if(!confirm('Confirma a alteração da palavra-passe?')) return;
+  const f = new FormData(ev.target);
+  try{
+    await UTILIZADOR_ATUAL.updatePassword(f.get('novaSenha'));
+    mostrarToast('Palavra-passe alterada');
+    ev.target.reset();
+  }catch(e){
+    mostrarToast('Erro: ' + e.message + ' (pode ser necessário voltar a iniciar sessão recentemente)');
+  }
+}
+</script>
+</body>
+</html>
