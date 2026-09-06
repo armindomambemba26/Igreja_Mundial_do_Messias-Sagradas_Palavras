@@ -1,1 +1,0 @@
-# Igreja_Mundial_do_Messias-Sagradas_Palavras
